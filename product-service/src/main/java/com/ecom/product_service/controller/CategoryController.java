@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/ecommerce/categories")
 public class CategoryController {
 
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     public CategoryController(CategoryService categoryService){
         this.categoryService = categoryService;
@@ -23,13 +23,24 @@ public class CategoryController {
         return categoryService.createCategory(categoryRequestDto);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<ExtendedCategoryResponseDto> getAllCategories(){
         return categoryService.getAllCategories();
+    }
+
+    @PutMapping("/{categoryId}")
+    public CategoryResponseDto updateCategory(@PathVariable String categoryId, @RequestBody CategoryRequestDto categoryRequestDto){
+        return categoryService.updateCategory(categoryId,categoryRequestDto);
     }
 
     @GetMapping("/{categoryId}")
     public CategoryResponseDto getCategoryById(@PathVariable String categoryId){
         return categoryService.getCategoryById(categoryId);
+    }
+
+    @DeleteMapping("/{categoryId}")
+    public String deleteCategory(@PathVariable String categoryId){
+        categoryService.deleteCategory(categoryId);
+        return "Category deleted successfully with ID: "+ categoryId;
     }
 }

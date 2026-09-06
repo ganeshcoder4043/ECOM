@@ -50,6 +50,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public void deleteProduct(String productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
+        productRepository.deleteById(productId);
+        log.info("Product deleted successfully with ID: {}", productId);
+    }
+
+    @Override
     public ProductResponseDto updateStock(String productId, Integer stockQuantity) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
