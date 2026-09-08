@@ -37,9 +37,16 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @PatchMapping("/{productId}/stock")
+    /*@PatchMapping("/{productId}/stock")
     public ProductResponseDto updateStock(@PathVariable String productId, @RequestParam Integer stockQuantity){
         return productService.updateStock(productId,stockQuantity);
+    }*/
+
+    // ✅ CHANGE: @PatchMapping → @PutMapping
+    @PutMapping("/{productId}/stock")  // ← Yahan change karo!
+    public ProductResponseDto updateStock(@PathVariable String productId, @RequestParam Integer stockQuantity){
+        log.info("Updating stock for product: {} to {}", productId, stockQuantity);
+        return productService.updateStock(productId, stockQuantity);
     }
 
     @DeleteMapping("/{productId}")

@@ -57,14 +57,31 @@ public class ProductServiceImpl implements ProductService {
         log.info("Product deleted successfully with ID: {}", productId);
     }
 
-    @Override
+    /*@Override
     public ProductResponseDto updateStock(String productId, Integer stockQuantity) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
         product.setStockQuantity(stockQuantity);
         productRepository.save(product);
         return convertToDto(product);
+    }*/
 
+    @Override
+    public ProductResponseDto updateStock(String productId, Integer stockQuantity) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
+
+        int newStock = product.getStockQuantity() + stockQuantity;  // ← YEH LINE ADD KARO
+
+        // ✅ Negative stock mat hone do
+        if (newStock < 0) {
+            throw new RuntimeException("Insufficient stock! Available: " +
+                    product.getStockQuantity() + ", Requested: " + Math.abs(stockQuantity));
+        }
+
+        product.setStockQuantity(newStock);  // ← YEH LINE CHANGE KARO (stockQuantity ki jagah newStock)
+        productRepository.save(product);
+        return convertToDto(product);
     }
 
     private ProductResponseDto convertToDto(Product product){

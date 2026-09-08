@@ -1,25 +1,22 @@
-package com.ecom.order_service.entity;
+package com.ecom.order_service.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.ecom.order_service.entity.OrderItem;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity
-@Getter @Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order {
-
-    @Id
+public class OrderResponseDTO {
     private String orderId;
     private String customerId;
     private LocalDateTime orderDate;
     private Double totalAmount;
-    private String status;
+    private OrderStatus status;
+    private List<OrderItem> items;
 
 }
