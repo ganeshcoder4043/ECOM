@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaymentRequestDTO {
+public class OrderStatusUpdateRequestDTO {
 
     private String orderId;
-    private String customerId;
-    private Double amount;
-
+    private String status;
 }

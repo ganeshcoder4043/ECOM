@@ -14,7 +14,7 @@ public class PaymentResponseDTO {
     private String paymentId;
     private String orderId;
     private String customerId;
-    private String amount;
+    private Double amount;
     private LocalDate paymentDate;
     private PaymentStatus paymentStatus;
     private String transactionId;
