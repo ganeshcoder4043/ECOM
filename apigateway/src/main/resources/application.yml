@@ -11,6 +11,12 @@ spring:
               uri: http://localhost:6000
               predicates:
                 - Path=/ecommerce/products/**, /ecommerce/categories/**
+              filters:
+                - name: RequestRateLimiter
+                  args:
+                    key-resolver: "#{@ipKeyResolver}"
+                    redis-rate-limiter.replenishRate: 2
+                    redis-rate-limiter.burstCapacity: 2
 
             # ============================================
             # 📦 ORDER SERVICE ROUTE
@@ -19,6 +25,12 @@ spring:
               uri: http://localhost:7000
               predicates:
                 - Path=/orders/**
+              filters:
+                - name: RequestRateLimiter
+                  args:
+                    key-resolver: "#{@ipKeyResolver}"
+                    redis-rate-limiter.replenishRate: 2
+                    redis-rate-limiter.burstCapacity: 2
 
             # ============================================
             # 💳 PAYMENT SERVICE ROUTE
@@ -27,7 +39,12 @@ spring:
               uri: http://localhost:8000
               predicates:
                 - Path=/payments/**
-
+              filters:
+                - name: RequestRateLimiter
+                  args:
+                    key-resolver: "#{@ipKeyResolver}"
+                    redis-rate-limiter.replenishRate: 2
+                    redis-rate-limiter.burstCapacity: 2
 # ============================================
 # 🔍 EUREKA CONFIGURATION
 # ============================================
