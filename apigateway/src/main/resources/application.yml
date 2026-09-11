@@ -1,0 +1,41 @@
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            # ============================================
+            # 🛍️ PRODUCT SERVICE ROUTE
+            # ============================================
+            - id: product-service-route
+              uri: http://localhost:6000
+              predicates:
+                - Path=/ecommerce/products/**, /ecommerce/categories/**
+
+            # ============================================
+            # 📦 ORDER SERVICE ROUTE
+            # ============================================
+            - id: order-service-route
+              uri: http://localhost:7000
+              predicates:
+                - Path=/orders/**
+
+            # ============================================
+            # 💳 PAYMENT SERVICE ROUTE
+            # ============================================
+            - id: payment-service-route
+              uri: http://localhost:8000
+              predicates:
+                - Path=/payments/**
+
+# ============================================
+# 🔍 EUREKA CONFIGURATION
+# ============================================
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka
+#    register-with-eureka: true
+#    fetch-registry: true
+#  instance:
+#    prefer-ip-address: true
