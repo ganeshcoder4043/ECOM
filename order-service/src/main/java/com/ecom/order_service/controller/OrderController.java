@@ -4,6 +4,8 @@ import com.ecom.order_service.dto.OrderRequestDTO;
 import com.ecom.order_service.dto.OrderResponseDTO;
 import com.ecom.order_service.dto.OrderStatus;
 import com.ecom.order_service.service.OrderService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +19,16 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    @CircuitBreaker(name = "orderServiceCB", fallbackMethod = "placeOrderFallback")
+    @Retry(name = "orderServiceRetry")
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody OrderRequestDTO request) {
         OrderResponseDTO responseDTO = orderService.placeOrder(request);
         return ResponseEntity.ok(responseDTO);
+    }
+
+    public ResponseEntity<String> placeOrderFallback(){
+        return ResponseEntity.ok("product service currently not runnable !!!!");
     }
 
     @GetMapping("/{orderId}")

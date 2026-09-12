@@ -18,6 +18,16 @@ spring:
                     redis-rate-limiter.replenishRate: 2
                     redis-rate-limiter.burstCapacity: 2
 
+                # ============================================
+                #  CircuitBreaker
+                # ============================================
+                - name: CircuitBreaker
+                  args:
+                    name: productServiceCircuitBreaker
+                    fallbackUri: forward:/fallback/product
+
+
+
             # ============================================
             # 📦 ORDER SERVICE ROUTE
             # ============================================
@@ -32,6 +42,11 @@ spring:
                     redis-rate-limiter.replenishRate: 2
                     redis-rate-limiter.burstCapacity: 2
 
+                - name: CircuitBreaker
+                  args:
+                    name: orderServiceCircuitBreaker
+                    fallbackUri: forward:/fallback/order
+
             # ============================================
             # 💳 PAYMENT SERVICE ROUTE
             # ============================================
@@ -45,6 +60,11 @@ spring:
                     key-resolver: "#{@ipKeyResolver}"
                     redis-rate-limiter.replenishRate: 2
                     redis-rate-limiter.burstCapacity: 2
+
+                - name: CircuitBreaker
+                  args:
+                    name: paymentServiceCircuitBreaker
+                    fallbackUri: forward:/fallback/payment
 # ============================================
 # 🔍 EUREKA CONFIGURATION
 # ============================================
