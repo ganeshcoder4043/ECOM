@@ -27,7 +27,7 @@ public class OrderController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    public ResponseEntity<String> placeOrderFallback(){
+    public ResponseEntity<?> placeOrderFallback(OrderRequestDTO requestDTO, Exception ex) {
         return ResponseEntity.ok("product service currently not runnable !!!!");
     }
 

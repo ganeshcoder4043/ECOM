@@ -10,8 +10,10 @@ spring:
             - id: product-service-route
               uri: http://localhost:6000
               predicates:
-                - Path=/ecommerce/products/**, /ecommerce/categories/**
+#                - Path=/ecommerce/products/**, /ecommerce/categories/**
+                - Path=/api/v1/products/**, /api/v1/categories/**   # Rewrite path
               filters:
+                - RewritePath=/api/v1/(?<segment>.*), /ecommerce/${segment}
                 - name: RequestRateLimiter
                   args:
                     key-resolver: "#{@ipKeyResolver}"

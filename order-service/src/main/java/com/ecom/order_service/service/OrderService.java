@@ -5,6 +5,9 @@ import com.ecom.order_service.entity.Orders;
 import com.ecom.order_service.entity.OrderItem;
 import com.ecom.order_service.repository.OrderItemRepository;
 import com.ecom.order_service.repository.OrderRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class OrderService {
 
     private final OrderRepository orderRepository;
@@ -25,6 +29,7 @@ public class OrderService {
         this.productClient = productClient;
     }
 
+    
     public OrderResponseDTO placeOrder(OrderRequestDTO requestDTO) {
         String orderId = generateOrderId();
         double totalAmount = 0.0;
