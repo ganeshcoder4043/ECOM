@@ -3,17 +3,22 @@ spring:
     gateway:
       server:
         webflux:
+          discovery:             # Discovery
+            locator:
+              lower-case-service-id: true
+              enabled: true
           routes:
             # ============================================
             # 🛍️ PRODUCT SERVICE ROUTE
             # ============================================
             - id: product-service-route
-              uri: http://localhost:6000
+#              uri: http://localhost:6000
+              uri: lb://product-service
               predicates:
-#                - Path=/ecommerce/products/**, /ecommerce/categories/**
-                - Path=/api/v1/products/**, /api/v1/categories/**   # Rewrite path
+                - Path=/ecommerce/products/**, /ecommerce/categories/**
+#                - Path=/api/v1/products/**, /api/v1/categories/**   # Rewrite path
               filters:
-                - RewritePath=/api/v1/(?<segment>.*), /ecommerce/${segment}
+#                - RewritePath=/api/v1/(?<segment>.*), /ecommerce/${segment}
                 - name: RequestRateLimiter
                   args:
                     key-resolver: "#{@ipKeyResolver}"
@@ -67,14 +72,16 @@ spring:
                   args:
                     name: paymentServiceCircuitBreaker
                     fallbackUri: forward:/fallback/payment
+
+
 # ============================================
 # 🔍 EUREKA CONFIGURATION
 # ============================================
-#eureka:
-#  client:
-#    service-url:
-#      defaultZone: http://localhost:8761/eureka
-#    register-with-eureka: true
-#    fetch-registry: true
-#  instance:
-#    prefer-ip-address: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
